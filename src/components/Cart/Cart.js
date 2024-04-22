@@ -1,34 +1,30 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import ModalUI from "../UI/ModalUI";
-
-const dummyArray = [
-  {
-    id: "1",
-    title: "Colors",
-    price: 100,
-    imageUrl: "https://prasadyash2411.github.io/ecom-website/img/Album%201.png",
-  },
-  {
-    title: "blue",
-  },
-];
+import CartItems from "./CartItems";
+import { Button, Container, Row, Table } from "react-bootstrap";
+import CartContext from "../../store/cart-context";
 
 const Cart = (props) => {
-  const [showCart, setShowCart] = useState(false);
-
-  const handleToggleCart = () => {
-    setShowCart((prevShowCart) => !prevShowCart);
+  const cartCtx = useContext(CartContext);
+  const removeHandler = (id) => {
+    cartCtx.removeItem(id);
   };
-
   return (
     <div>
-      {dummyArray.map((item) => (
-        <ModalUI show={props.show} OnHide={props.OnHide}>
-          {dummyArray.map((item) => (
-            <li>{item.title}</li>
-          ))}
-        </ModalUI>
-      ))}
+      <ModalUI show={props.show} OnHide={props.OnHide}>
+        {cartCtx.items.map((item) => (
+          <CartItems
+            OnRemove={removeHandler.bind(null, item.id)}
+            title={item.title}
+            price={item.price}
+          />
+        ))}
+        <Container>
+          <Row>
+            <Button>Purchase</Button>
+          </Row>
+        </Container>
+      </ModalUI>
     </div>
   );
 };

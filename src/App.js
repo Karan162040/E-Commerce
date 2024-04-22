@@ -3,10 +3,11 @@ import React from "react";
 import Header from "./components/Layout/Header";
 import Colors from "./components/Colors/Colors";
 import Cart from "./components/Cart/Cart";
+import CartProvider from "./store/CartProvider";
 import { useState } from "react";
 
 function App() {
-  const [modalShow, setModalShow] = React.useState(true);
+  const [modalShow, setModalShow] = useState(false);
   const cartShow = () => {
     setModalShow(true);
   };
@@ -14,11 +15,11 @@ function App() {
     setModalShow(false);
   };
   return (
-    <div>
+    <CartProvider>
       <Header OnShow={cartShow} />
       <Colors />
       {modalShow && <Cart OnHide={cartHide} show={modalShow} />}
-    </div>
+    </CartProvider>
   );
 }
 export default App;
